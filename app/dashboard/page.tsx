@@ -5,8 +5,6 @@ import { get } from "http";
 import { signOut } from "next-auth/react"
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { SubjectOverview } from "./_components/SubjectOverview";
-import UserInfo from "./_components/UserInfo";
 import SemesterOverview from "./_components/SemesterOverview";
 import { AdminView } from "./_components/AdminView";
 
