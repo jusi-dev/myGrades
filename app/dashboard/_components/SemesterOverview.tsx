@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 export default function SemesterOverview(user: any) {
     const { data: session } = useSession();
     const [ isDeleteMode, setIsDeleteMode ] = useState(false);
-    const [ fetchedUser, setFetchedUser ] = useState();
+    const [ fetchedUser, setFetchedUser ] = useState<any>();
 
     const router = useRouter();
     const { toast } = useToast();
