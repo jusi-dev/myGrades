@@ -9,12 +9,12 @@ import { CreateUser } from "./CreateUser";
 
 export const AdminView = (user: any) => {
 
-    const [users, setUsers] = useState();
+    const [users, setUsers] = useState<object[]>([]);
 
     const getAllUsersFromDB = async () => {
         const users = await getAllUsers(user);
         console.log("All users", users)
-        setUsers(users);
+        setUsers(users.users); // Change the argument type to 'users.users'
     }
 
     useEffect(() => {
@@ -33,7 +33,7 @@ export const AdminView = (user: any) => {
             <div className="m-4 mt-10 shadow-md p-4 rounded-lg bg-slate-100">
                 <p className="underline underline-offset-4 text-pink-700 font-bold text-2xl mb-6">User Verwaltung</p>
                 <Accordion type="single" collapsible className=" p-4">
-                    {users && users.users.map((user: any) => {
+                    {users && users.map((user: any) => {
                         return (
                             <StudentOverview user={user} key={user._id}/>
                         )
