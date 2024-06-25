@@ -10,7 +10,7 @@ import { AdminView } from "./_components/AdminView";
 
 export default function Dashboard() {
     const { data: session } = useSession();
-    const [ user, setUser ] = useState(null);
+    const [ user, setUser ] = useState<any>(null);
 
 
     const fetchUser = async () => {
