@@ -35,7 +35,7 @@ export const AdminView = (user: any) => {
                 <Accordion type="single" collapsible className=" p-4">
                     {users && users.users.map((user: any) => {
                         return (
-                            <StudentOverview user={user} />
+                            <StudentOverview user={user} key={user._id}/>
                         )
                     })}
                 </Accordion>
