@@ -21,9 +21,9 @@ export default function LoginForm() {
       setIsClient(true);
     }, []);
 
-    if (!isClient) return null;
-
   const router = useRouter()
+
+  if (!isClient) return null;
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
