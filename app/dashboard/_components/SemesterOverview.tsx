@@ -126,7 +126,7 @@ export default function SemesterOverview(user: any) {
             </div>
             {fetchedUser &&
                 <div className="flex flex-wrap gap-4 py-4 mt-6">
-                    {fetchedUser.semesters.map((semester: string) => (
+                    {fetchedUser.semesters.map((semester: any) => (
                         <div onClick={() => switchOrDeleteSemester(semester)} key={semester.semester_id} 
                             className={`flex flex-col justify-center p-4 ${isDeleteMode ? "bg-pink-300" : "bg-pink-600"} ${isDeleteMode && 'animate-pulse'} text-white text-center text-xl font-bold rounded-xl w-[45%] h-32 border-white border-2 shadow-lg`}
                         >
