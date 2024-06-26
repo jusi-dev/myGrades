@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
     const { data: session } = useSession();
-    const [ user, setUser ] = useState(null);
+    const [ user, setUser ] = useState<any>(null);
 
 
     const fetchUser = async () => {
