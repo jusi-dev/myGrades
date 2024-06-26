@@ -22,8 +22,8 @@ export default function SemesterDetails() {
     const searchParam = useParams().semester;
     const { data: session } = useSession();
     const [ user, setUser ] = useState<any>(null);
-    const [ semester, setSemester ] = useState(null);
-    const [ subject, setSubject ] = useState(null);
+    const [ semester, setSemester ] = useState<any>(null);
+    const [ subject, setSubject ] = useState<any>(null);
     const [ currentSubjectId, setCurrentSubjectId ] = useState("")
 
     const [ isDeleteMode, setIsDeleteMode ] = useState(false);
@@ -198,7 +198,7 @@ export default function SemesterDetails() {
                         {/* List all subjects for semester {searchParam[0]} */}
                         <div className="flex flex-wrap gap-4">
                                 { semester &&
-                                    semester.subjects.map((subject: string) => (
+                                    semester.subjects.map((subject: any) => (
                                         <div key={subject._id} onClick={() => setOrDeleteSubject(subject)} className={`flex flex-col justify-center p-4 ${isDeleteMode ? "bg-pink-300" : "bg-pink-600"} ${isDeleteMode && 'animate-pulse'} text-white text-center text-xl font-bold rounded-xl w-[45%] h-32 border-white border-2 shadow-lg`}>
                                             {subject.subject_name}
                                             <p className="text-sm">{calculateGradeAverage(subject)} Ø</p>
