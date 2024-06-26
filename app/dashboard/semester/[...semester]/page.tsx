@@ -21,7 +21,7 @@ interface User {
 export default function SemesterDetails() {
     const searchParam = useParams().semester;
     const { data: session } = useSession();
-    const [ user, setUser ] = useState(null);
+    const [ user, setUser ] = useState<any>(null);
     const [ semester, setSemester ] = useState(null);
     const [ subject, setSubject ] = useState(null);
     const [ currentSubjectId, setCurrentSubjectId ] = useState("")
