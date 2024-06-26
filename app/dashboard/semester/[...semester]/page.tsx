@@ -126,7 +126,7 @@ export default function SemesterDetails() {
         console.log("Current subject ID", sessionSubjectId)
 
         // Get subject from semester
-        const newSubject = semester.subjects.find(newSubject => newSubject._id == sessionSubjectId);
+        const newSubject = semester.subjects.find((newSubject: any) => newSubject._id == sessionSubjectId);
 
         console.log("New subject", newSubject)
 
