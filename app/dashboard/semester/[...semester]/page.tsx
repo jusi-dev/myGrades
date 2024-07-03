@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Ban, Trash, Undo2 } from "lucide-react";
 import { set } from "mongoose";
 import { useToast } from "@/components/ui/use-toast";
+import { Loader } from "@/components/ui/loader";
 
 interface User {
     _id: string;
@@ -197,30 +198,37 @@ export default function SemesterDetails() {
 
                         {/* List all subjects for semester {searchParam[0]} */}
                         <div className="flex flex-wrap gap-4">
-                                { semester &&
-                                    semester.subjects.map((subject: any) => (
-                                        <div key={subject._id} onClick={() => setOrDeleteSubject(subject)} className={`flex flex-col justify-center cursor-pointer p-4 ${isDeleteMode ? "bg-pink-300" : "bg-pink-600"} ${isDeleteMode && 'animate-pulse'} text-white text-center text-xl font-bold rounded-xl w-[45%] h-32 border-white border-2 shadow-lg`}>
-                                            {subject.subject_name}
-                                            <p className="text-sm">{calculateGradeAverage(subject)} Ø</p>
-                                        </div>
-                                    ))
-                                }
+                                { semester ?
+                                <>
+                                    {
+                                        semester.subjects.map((subject: any) => (
+                                            <div key={subject._id} onClick={() => setOrDeleteSubject(subject)} className={`flex flex-col justify-center cursor-pointer p-4 ${isDeleteMode ? "bg-pink-300" : "bg-pink-600"} ${isDeleteMode && 'animate-pulse'} text-white text-center text-xl font-bold rounded-xl w-[45%] h-32 border-white border-2 shadow-lg`}>
+                                                {subject.subject_name}
+                                                <p className="text-sm">{calculateGradeAverage(subject)} Ø</p>
+                                            </div>
+                                        ))
+                                    }
+                                
 
-                            <Dialog>
-                                <DialogTrigger className="flex flex-col justify-center p-4 bg-pink-600 text-white text-center text-xl font-bold rounded-xl w-[45%] h-32 border-white border-2 shadow-lg">+ Fach hinzufügen</DialogTrigger>
-                                <DialogContent>
-                                    <DialogHeader>
-                                    <DialogTitle>Neues Fach hinzufügen</DialogTitle>
-                                    <DialogDescription>
-                                        <p className="mb-2 text-gray-700">Gib den Namen deines neuen Faches an:</p>
-                                        <Input type="text" value={subjectName} onChange={(e) => setSubjectName(e.target.value)} placeholder="Math" />
-                                        <DialogClose asChild>
-                                            <button onClick={() => createSubject(subjectName)} className="py-3 px-4 bg-pink-600 mt-4 text-white rounded-xl shadow-lg">Fach erstellen</button>
-                                        </DialogClose>
-                                    </DialogDescription>
-                                    </DialogHeader>
-                                </DialogContent>
-                            </Dialog>
+                                    <Dialog>
+                                        <DialogTrigger className="flex flex-col justify-center p-4 bg-pink-600 text-white text-center text-xl font-bold rounded-xl w-[45%] h-32 border-white border-2 shadow-lg">+ Fach hinzufügen</DialogTrigger>
+                                        <DialogContent>
+                                            <DialogHeader>
+                                            <DialogTitle>Neues Fach hinzufügen</DialogTitle>
+                                            <DialogDescription>
+                                                <p className="mb-2 text-gray-700">Gib den Namen deines neuen Faches an:</p>
+                                                <Input type="text" value={subjectName} onChange={(e) => setSubjectName(e.target.value)} placeholder="Math" />
+                                                <DialogClose asChild>
+                                                    <button onClick={() => createSubject(subjectName)} className="py-3 px-4 bg-pink-600 mt-4 text-white rounded-xl shadow-lg">Fach erstellen</button>
+                                                </DialogClose>
+                                            </DialogDescription>
+                                            </DialogHeader>
+                                        </DialogContent>
+                                    </Dialog>
+                                </>
+                                    :
+                                <Loader />
+                                }
                         </div>
 
                         <div className="w-full flex mt-8">

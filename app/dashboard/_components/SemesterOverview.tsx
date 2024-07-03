@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ChangePassword } from "./ChangePassword";
 import { Ban, LogOut, Trash } from "lucide-react";
+import { Loader } from "@/components/ui/loader";
 
 export default function SemesterOverview(user: any) {
     const { data: session } = useSession();
@@ -126,7 +127,7 @@ export default function SemesterOverview(user: any) {
                 <p className="text-4xl font-semibold text-pink-700">Willkommen <br/><span className="text-pink-600" onClick={() => router.replace("/dashboard/userinfo")}>{user.name}</span></p>
                 <h1 className="text-5xl font-bold text-pink-700 mt-6">Übersicht</h1>
             </div>
-            {fetchedUser &&
+            {fetchedUser ?
                 <div className="flex flex-wrap gap-4 py-4 mt-6">
                     {fetchedUser.semesters.map((semester: any) => (
                         <div onClick={() => switchOrDeleteSemester(semester)} key={semester.semester_id} 
@@ -138,6 +139,9 @@ export default function SemesterOverview(user: any) {
                     ))}
                     <div onClick={() => addSemester()} className={`flex flex-col justify-center p-4 bg-pink-600 text-white text-center text-xl font-bold rounded-xl w-[45%] h-32 border-white border-2 shadow-lg cursor-pointer`}>Semester hinzufügen +</div>
                 </div>
+
+                :
+                <Loader />
             }
 
             <div className="w-full flex mt-8">

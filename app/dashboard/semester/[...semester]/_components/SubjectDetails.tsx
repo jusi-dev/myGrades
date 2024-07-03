@@ -46,6 +46,10 @@ export default function SubjectDetails(subject: any) {
                 description: "Die Note wurde erfolgreich erstellt.",
                 variant: "success"
             })
+
+            setGradeName("");
+            setGradeValue(0);
+            setWeight(0);
         } catch (error) {
             console.error(error)
             toast({
@@ -161,10 +165,13 @@ export default function SubjectDetails(subject: any) {
                     value={gradeValue}
                     onChange={(e) => {
                         let value = parseFloat(e.target.value);
+                        // @ts-ignore
+                        if (Number.isNaN(value)) value = undefined;
                         if (value < 1) value = 1;
                         if (value > 6) value = 6;
                         setGradeValue(value);
                     }}
+                    className=".placeholder-pink-600"
                     placeholder="6"
                     min={1}
                     max={6}
@@ -181,6 +188,8 @@ export default function SubjectDetails(subject: any) {
                       value={weight}
                       onChange={(e) => {
                         let value = parseFloat(e.target.value);
+                        // @ts-ignore
+                        if (Number.isNaN(value)) value = undefined;
                         if (value < 1) value = 1;
                         if (value > 100) value = 100;
                         setWeight(value);
