@@ -100,7 +100,7 @@ export const createGradeForSubject = async (userId: string, semesterId: string, 
         }
     
         // Finde das spezifische Semester
-        const semester = user.semesters.find(s => s.semester_id === semesterId);
+        const semester = user.semesters.find((s: any) => s.semester_id === semesterId);
         if (!semester) {
           throw new Error('Semester nicht gefunden');
         }
@@ -109,7 +109,7 @@ export const createGradeForSubject = async (userId: string, semesterId: string, 
 
     
         // Finde das spezifische Fach innerhalb des Semesters
-        const subject = semester.subjects.find(sub => sub._id == subjectId);
+        const subject = semester.subjects.find((sub: any) => sub._id == subjectId);
 
 
         if (!subject) {
@@ -147,7 +147,7 @@ export const deleteGradeForSubject = async (userId: string, semesterId: string, 
         }
 
         // Finde das spezifische Semester
-        const semester = user.semesters.find(s => s.semester_id === semesterId);
+        const semester = user.semesters.find((s: any) => s.semester_id === semesterId);
 
         if (!semester) {
             throw new Error('Semester nicht gefunden');
@@ -155,7 +155,7 @@ export const deleteGradeForSubject = async (userId: string, semesterId: string, 
 
         // Finde das spezifische Fach innerhalb des Semesters
 
-        const subject = semester.subjects.find(sub => sub._id == subjectId);
+        const subject = semester.subjects.find((sub: any) => sub._id == subjectId);
 
         if (!subject) {
             throw new Error('Fach nicht gefunden');
@@ -163,7 +163,7 @@ export const deleteGradeForSubject = async (userId: string, semesterId: string, 
 
         // Finde die spezifische Note innerhalb des Fachs
 
-        const grade = subject.grades.find(g => g._id == gradeId);
+        const grade = subject.grades.find((g: any) => g._id == gradeId);
 
         if (!grade) {
             throw new Error('Note nicht gefunden');
@@ -171,7 +171,7 @@ export const deleteGradeForSubject = async (userId: string, semesterId: string, 
 
         // Entferne die Note aus dem subjects Array
 
-        subject.grades = subject.grades.filter(g => g._id != gradeId);
+        subject.grades = subject.grades.filter((g: any) => g._id != gradeId);
 
         // Speichere die Änderungen am Benutzer
 
@@ -200,7 +200,7 @@ export const deleteSubjectForSemester = async (userId: string, semesterId: strin
 
         // Finde das spezifische Semester
 
-        const semester = user.semesters.find(s => s.semester_id === semesterId);
+        const semester = user.semesters.find((s: any) => s.semester_id === semesterId);
 
         if (!semester) {
             throw new Error('Semester nicht gefunden');
@@ -208,7 +208,7 @@ export const deleteSubjectForSemester = async (userId: string, semesterId: strin
 
         // Finde das spezifische Fach innerhalb des Semesters
 
-        const subject = semester.subjects.find(sub => sub._id == subjectId);
+        const subject = semester.subjects.find((sub: any) => sub._id == subjectId);
 
         if (!subject) {
             throw new Error('Fach nicht gefunden');
@@ -216,7 +216,7 @@ export const deleteSubjectForSemester = async (userId: string, semesterId: strin
 
         // Entferne das Fach aus dem subjects Array
 
-        semester.subjects = semester.subjects.filter(sub => sub._id != subjectId);
+        semester.subjects = semester.subjects.filter((sub: any) => sub._id != subjectId);
 
         // Speichere die Änderungen am Benutzer
 
@@ -246,7 +246,7 @@ export const deleteSemesterForUser = async (userId: string, semesterId: string) 
 
         // Entferne das Semester aus dem semesters Array
 
-        user.semesters = user.semesters.filter(s => s.semester_id != semesterId);
+        user.semesters = user.semesters.filter((s: any) => s.semester_id != semesterId);
 
         // Speichere die Änderungen am Benutzer
 

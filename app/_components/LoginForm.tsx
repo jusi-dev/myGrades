@@ -7,7 +7,6 @@ import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export default function LoginForm() {
   const [email, setEmail] = useState('')
