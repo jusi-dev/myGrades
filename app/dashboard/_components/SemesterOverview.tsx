@@ -5,6 +5,8 @@ import { createSemesterForUser, deleteSemesterForUser, getUserByEmail } from "@/
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ChangePassword } from "./ChangePassword";
+import { Ban, LogOut, Trash } from "lucide-react";
 
 export default function SemesterOverview(user: any) {
     const { data: session } = useSession();
@@ -122,28 +124,29 @@ export default function SemesterOverview(user: any) {
         <div className="flex flex-col p-6 h-full min-h-screen bg-[url('/background-basic.png')] lg:bg-[url('/background-basic-desktop.png')] bg-no-repeat bg-cover lg:px-[30%] lg:pt-[20vh]">
             <div>
                 <p className="text-4xl font-semibold text-pink-700">Willkommen <br/><span className="text-pink-600" onClick={() => router.replace("/dashboard/userinfo")}>{user.name}</span></p>
-                <h1 className="text-5xl font-bold text-pink-700 mt-2">Übersicht</h1>
+                <h1 className="text-5xl font-bold text-pink-700 mt-6">Übersicht</h1>
             </div>
             {fetchedUser &&
                 <div className="flex flex-wrap gap-4 py-4 mt-6">
                     {fetchedUser.semesters.map((semester: any) => (
                         <div onClick={() => switchOrDeleteSemester(semester)} key={semester.semester_id} 
-                            className={`flex flex-col justify-center p-4 ${isDeleteMode ? "bg-pink-300" : "bg-pink-600"} ${isDeleteMode && 'animate-pulse'} text-white text-center text-xl font-bold rounded-xl w-[45%] h-32 border-white border-2 shadow-lg`}
+                            className={`flex flex-col justify-center p-4 cursor-pointer ${isDeleteMode ? "bg-pink-300" : "bg-pink-600"} ${isDeleteMode && 'animate-pulse'} text-white text-center text-xl font-bold rounded-xl w-[45%] h-32 border-white border-2 shadow-lg`}
                         >
                             {semester.semester_name}
                             <p className="text-xs">{calculateSemesterAverage(semester)} Ø</p>
                         </div>
                     ))}
-                    <div onClick={() => addSemester()} className={`flex flex-col justify-center p-4 bg-pink-600 text-white text-center text-xl font-bold rounded-xl w-[45%] h-32 border-white border-2 shadow-lg`}>Semester hinzufügen +</div>
+                    <div onClick={() => addSemester()} className={`flex flex-col justify-center p-4 bg-pink-600 text-white text-center text-xl font-bold rounded-xl w-[45%] h-32 border-white border-2 shadow-lg cursor-pointer`}>Semester hinzufügen +</div>
                 </div>
             }
 
             <div className="w-full flex mt-8">
-                {isDeleteMode && <button className="bg-pink-600 p-4 text-white font-semibold rounded-xl ml-auto mr-4 shadow-lg border-white border-2" onClick={() => setIsDeleteMode(false)}>Abbrechen</button>}
-                {!isDeleteMode && <button className="bg-pink-600 p-4 text-white font-semibold rounded-xl ml-auto mr-4 shadow-lg border-white border-2" onClick={() => setIsDeleteMode(true)}>Semester löschen</button>}
+                <ChangePassword user={user}/>
+                {isDeleteMode && <button className="bg-pink-600 p-4 text-white font-semibold rounded-xl ml-auto mr-4 shadow-lg flex gap-x-2 border-white border-2" onClick={() => setIsDeleteMode(false)}><Ban /> Abbrechen</button>}
+                {!isDeleteMode && <button className="bg-pink-600 p-4 text-white font-semibold rounded-xl ml-auto mr-4 shadow-lg flex gap-x-2 border-white border-2" onClick={() => setIsDeleteMode(true)}><Trash /> Semester löschen</button>}
             </div>
 
-            <button className="bg-pink-600 p-4 text-white font-semibold rounded-xl mt-24 shadow-lg border-white border-2" onClick={() => signOut()}>Abmelden</button>
+            <button className="bg-pink-600 p-4 text-white font-semibold rounded-xl mt-24 shadow-lg border-white flex gap-x-2 border-2 items-center justify-center" onClick={() => signOut()}><LogOut /> Abmelden</button>
         </div>
     )
 }

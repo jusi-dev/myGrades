@@ -1,34 +1,18 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { ArrowDown, Crown } from "lucide-react"
+import { ArrowDown, Crown, ShieldCheck, SquareUserRound } from "lucide-react"
 import { DeleteUser } from "./DeleteUser";
 import { MakeAdmin } from "./MakeAdmin";
 import { RemoveAdmin } from "./RemoveAdmin";
 import { useSession } from "next-auth/react";
 import { ToggleMail } from "./ToggleMail";
+import { AddApprentice } from "./AddApprentice";
+import { MakeSuperAdmin } from "./MakeSuperAdmin";
+import { RemoveSuperadmin } from "./RemoveSuperadmin";
+import { useEffect, useState } from "react";
+import { getUserByEmail } from "@/lib/mongodb";
+import { ListAddedApprentice } from "./ListAddedApprentice";
 
-export const StudentOverview = (user: any) => {
-
-    const currentSession = useSession();
-    console.log("Current session", currentSession.data?.user?.email)
-
-    const calculateGradeAverage = (grades: any) => {
-        let totalGrades = 0;
-        let totalWeight = 0;
-
-        grades.forEach((grade: any) => {
-            if (grade.grade_value === 0) {
-                return; // Exit the current iteration and continue with the next iteration
-            }
-            totalGrades += grade.grade_value * grade.weight;
-            totalWeight += grade.weight;
-        });
-
-        if (totalWeight === 0) {
-            return 0;
-        }
-
-        return (totalGrades / totalWeight).toFixed(2);
-    }
+export const StudentOverview = ({ user, currentUser }: any) => {
 
     const calculateSemesterAverage = (semester: any) => {
 
@@ -70,8 +54,6 @@ export const StudentOverview = (user: any) => {
         if (average === "NaN") {
             average = "0.00";
         }
-
-        console.log("Semester average: ", average)
     
         return average;
     }
@@ -91,6 +73,8 @@ export const StudentOverview = (user: any) => {
         if (totalWeight === 0) {
             return 0;
         }
+
+        console.log("Loggedin user", currentUser)
 
         return (totalGrades / totalWeight).toFixed(2);
     }
@@ -115,28 +99,34 @@ export const StudentOverview = (user: any) => {
         return (totalAverage / totalSemesters).toFixed(2);
     }
 
+
+
     return (
-        <AccordionItem value={user.user._id}>
+        <AccordionItem value={user._id}>
             <AccordionTrigger className="text-pink-600 font-bold text-xl text-left flex w-full justify-between">
                 <p className="mr-4">
-                    {user.user.name}
+                    {user.name}
                 </p>
                 <p className="text-lg ml-auto mr-4">
-                    {user.user.isAdmin 
+                    {user.isAdmin 
                         ?
-                            <p className="text-pink-600"><Crown /></p>
+                            user.isSuperadmin 
+                                ? 
+                                    <p className="text-pink-600"><Crown /></p>
+                                :
+                                    <p className="text-pink-600"><SquareUserRound /></p>
                         :
-                            <p>{calculateTotalAverage(user.user.semesters)}  Ø</p>
+                            <p>{calculateTotalAverage(user.semesters)}  Ø</p>
                     }
                 </p>
             </AccordionTrigger>
             <AccordionContent>
-                <div key={user.user._id}>
-                    <p>Name: {user.user.name}</p>
-                    <p>Email: {user.user.email}</p>
+                <div key={user._id}>
+                    <p>Name: {user.name}</p>
+                    <p>Email: {user.email}</p>
                 </div>
                 <Accordion type="single" collapsible>
-                    {user.user.semesters.map((semester: any) => {
+                    {user.semesters.map((semester: any) => {
                         return (
                             <AccordionItem value={semester.semester_id} key={semester.semester_id}>
                                 <AccordionTrigger className="text-pink-600 font-semibold flex justify-between w-full">
@@ -179,25 +169,51 @@ export const StudentOverview = (user: any) => {
                     })}
                 </Accordion>
 
-                { user.user.isAdmin &&
-                    <div className="flex justify-end w-full mt-4">
-                        <ToggleMail user={user.user} />
+                {user.isAdmin && !user.isSuperadmin &&
+                    <div>
+                        <p className="text-pink-600 font-bold mt-4">Sichtbare Lehrlinge</p>
+                        <div className="flex flex-col gap-y-2 mt-2 mb-2">
+                            {user.apprentices.length === 0 && <p>Keine Lehrlinge hinzugefügt</p>}
+                            {user.apprentices.map((apprentice: any) => {
+                                return (
+                                    <ListAddedApprentice apprentice={apprentice} selectedUser={user}/>
+                                )
+                            })}
+                        </div>
                     </div>
                 }
+
+                <div className="flex flex-col gap-y-4 lg:flex-row lg:justify-between mt-6">
+                    {
+                        currentUser.isSuperadmin && !user.isSuperadmin && user.isAdmin &&
+                            <AddApprentice user={user} />
+                    }
+
+                    <ToggleMail user={user} callingUser={currentUser}/>
+                </div>
+
                 
-                { user.user.email !== currentSession.data?.user?.email 
+                
+                { currentUser.isSuperadmin && user.email !== currentUser.email
                     ?
-                        <div className="flex w-full mt-4">
-                            {user.user.isAdmin
-                                ? <RemoveAdmin user={user.user} />
-                                : <MakeAdmin user={user.user} />
+                        <div className="flex flex-col gap-y-4 lg:flex-row mt-4">
+                            {user.isAdmin
+                                ? <RemoveAdmin user={user} />
+                                : <MakeAdmin user={user} />
                             }
-                            <DeleteUser user={user.user} />
+
+                            {!user.isSuperadmin 
+                                ? 
+                                    user.isAdmin && <MakeSuperAdmin user={user} />
+                                : <RemoveSuperadmin user={user} />
+                            }
+                            <DeleteUser user={user} />
                         </div>
                     :
-                        <div className="flex justify-end w-full mt-4">
-                            <p className="text-red-600">Du kannst dich selbst nicht bearbeiten</p>
-                        </div>
+                        currentUser.isSuperadmin &&
+                            <div className="flex justify-end w-full mt-4">
+                                <p className="text-red-600">Du kannst dich selbst nicht bearbeiten</p>
+                            </div>
                 }
 
             </AccordionContent>

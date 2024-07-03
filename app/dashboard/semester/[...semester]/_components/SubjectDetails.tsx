@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { createGradeForSubject, deleteGradeForSubject } from "@/lib/mongodb";
+import { Ban, Trash } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
@@ -165,8 +166,8 @@ export default function SubjectDetails(subject: any) {
                 ))}
 
                 <div className="w-full flex mt-8">
-                    {isDeleteMode && <button className="bg-pink-600 p-4 text-white font-semibold rounded-xl ml-auto shadow-lg border-white border-2" onClick={() => setIsDeleteMode(false)}>Abbrechen</button>}
-                    {!isDeleteMode && <button className="bg-pink-600 p-4 text-white font-semibold rounded-xl ml-auto shadow-lg border-white border-2" onClick={() => setIsDeleteMode(true)}>Note löschen</button>}
+                    {isDeleteMode && <button className="bg-pink-600 p-4 text-white font-semibold rounded-xl ml-auto shadow-lg border-white border-2 flex gap-x-2" onClick={() => setIsDeleteMode(false)}><Ban />Abbrechen</button>}
+                    {!isDeleteMode && <button className="bg-pink-600 p-4 text-white font-semibold rounded-xl ml-auto shadow-lg border-white border-2 flex gap-x-2" onClick={() => setIsDeleteMode(true)}><Trash />Note löschen</button>}
                 </div>
             </div>
         </div>

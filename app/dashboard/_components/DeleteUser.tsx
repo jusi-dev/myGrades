@@ -1,14 +1,26 @@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
+import { useToast } from "@/components/ui/use-toast"
 import { deleteUser } from "@/lib/mongodb"
 import { UserMinus } from "lucide-react"
 
 export const DeleteUser = (user: any) => {
+    const { toast } = useToast()
     const deleteUserFromDB = async () => {
         try {
             await deleteUser(user.user._id)
             window.dispatchEvent(new CustomEvent('refetchUser'));
+            toast({
+                title: "User gelöscht",
+                description: `Der User ${user.user.name} wurde erfolgreich gelöscht.`,
+                variant: "success",
+            })
         } catch (error) {
             console.error(error)
+            toast({
+                title: "Ups...",
+                description: "Ein Fehler ist aufgetreten. Bitte versuche es erneut.",
+                variant: "destructive"
+            })
         }
     }
 

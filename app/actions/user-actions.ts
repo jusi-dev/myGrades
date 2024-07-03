@@ -5,6 +5,8 @@ import crypto from "crypto";
 import { sendEmail } from "./mail";
 import User from "@/models/user";
 import bcrypt from 'bcryptjs';
+import { useSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
 
 
 export const forgotPassword = async (email: string) => {
@@ -62,7 +64,16 @@ export const resetPassword = async (resetToken: string, password: string) => {
 }
 
 export const sendMailNotification = async (name: string, grade: number, subject: string, gradeName: string) => {
-    const notificationUsers = await User.find({ receivesMailNotifications: true });
+    const currentSession = await getServerSession();
+
+    const callingUser = await getUserByEmail(currentSession?.user?.email || '');
+
+    if (!callingUser) {
+        throw new Error('Kein User gefunden');
+    }
+
+    // Get all users that have callingUser.user._id in their receivesMailNotifications array
+    const notificationUsers = await User.find({ receivesMailNotifications: callingUser.user._id });
 
     notificationUsers.forEach(async (user: any) => {
         await sendEmail({
@@ -73,6 +84,7 @@ export const sendMailNotification = async (name: string, grade: number, subject:
                 <p>${name} hat eine neue Note im Fach ${subject} hinzugefügt.</p>
                 <p>Hinzugefügte Note: ${gradeName}</p>
                 <p>Notenwert: ${grade}</p>
+                <p>Einloggen und ansehen: <a href="https://mygrades.ch/dashboard/">myGrades</a></p>
             `
         })
     })

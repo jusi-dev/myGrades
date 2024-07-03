@@ -7,12 +7,14 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import { useToast } from "@/components/ui/use-toast"
 import { User, UserPlus } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
   
 
 export const CreateUser = () => {
+    const { toast } = useToast()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [name, setName] = useState('')
@@ -60,8 +62,19 @@ export const CreateUser = () => {
                 form.reset();
                 window.dispatchEvent(new CustomEvent('refetchUser'));
                 setOpen(false)
+                toast({
+                    title: "User erstellt",
+                    description: `Der User ${name} wurde erfolgreich erstellt.`,
+                    variant: "success",
+                })
+
             } else {
                 console.error('An error occured')
+                toast({
+                    title: "Ups...",
+                    description: "Ein Fehler ist aufgetreten. Bitte versuche es erneut.",
+                    variant: "destructive"
+                })
             }
         } catch (error) {
         console.error(error)
@@ -75,14 +88,14 @@ export const CreateUser = () => {
                 <DialogHeader>
                 <DialogTitle className="text-pink-600">Neuen User erstellen</DialogTitle>
                 <DialogDescription className="text-gray-700">
-                    Hiermit kannst du einen neuen User erstellen. <br/>Nach Erstellung des Users, sollte der User zwingend sein Passwort über die <span className="font-bold">"Passwort vergessen"</span> Funktion ändern.
+                    Hiermit kannst du einen neuen User erstellen. <br/>Nach Erstellung des Users, sollte der User <span className="font-bold">zwingend</span> sein Passwort ändern.
                     <div className="mt-6">
                         <form onSubmit={handleSubmit} className="flex flex-col gap-y-2">
                             <p className="text-pink-600">Vollständiger Name</p>
                             <Input onChange={(e) => setName(e.target.value)} type="text" placeholder="Vorname Nachname" className="w-auto py-2 focus:border-pink-600 focus:ring-0"/>
                             <p className="text-pink-600">E-Mail</p>
                             <Input onChange={(e) => setEmail(e.target.value)} type="email" placeholder="vorname.nachname@t-systems.com" className="w-auto py-2 focus:border-pink-600 focus:ring-0"/>
-                            <p className="text-pink-600">Passwort</p>
+                            <p className="text-pink-600">Initial Passwort</p>
                             <Input onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Passwort" className="w-auto py-2 focus:border-pink-600"/>
                             <Input type="submit" value="User erstellen" className="w-auto py-2 bg-pink-600 text-white text-center cursor-pointer mt-4 font-semibold"/>
                             {error && <p className="text-red-600">{error}</p>}

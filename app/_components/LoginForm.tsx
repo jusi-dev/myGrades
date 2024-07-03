@@ -59,7 +59,7 @@ export default function LoginForm() {
           <button className="text-pink-600 px-24 py-3 rounded-full bg-white uppercase">Login</button>
         </div>
       }
-      <div className="flex flex-col w-screen h-screen overflow-y-hidden px-[40%]">
+      <div className="flex flex-col w-screen h-screen overflow-y-hidden lg:px-[40%]">
         <div className="flex flex-col h-[45vh] items-center justify-center">
           <div className="w-[55%]">
             <h1 className="text-pink-600 text-2xl lg:text-4xl font-normal uppercase text-left">Welcome to</h1>
@@ -67,7 +67,7 @@ export default function LoginForm() {
           </div>
         </div>
 
-        <div className={`flex flex-col bg-white w-full px-12 pt-5 pb-20 mt-auto rounded-t-[17%] transition-all ${loginExpanded ? "translate-y-0" : "translate-y-full"}`}>
+        <div className={`flex flex-col bg-white w-full px-8 lg:px-12 pt-5 pb-20 mt-auto rounded-t-[17%] transition-all ${loginExpanded ? "translate-y-0" : "translate-y-full"}`}>
           <h1 className="text-pink-600 text-xl text-center uppercase mb-16">Login</h1>
           <form onSubmit={handleSubmit} className="flex flex-col">
             <p className="text-pink-600">Email</p>

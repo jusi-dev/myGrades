@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import SubjectDetails from "./_components/SubjectDetails";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Undo2 } from "lucide-react";
+import { Ban, Trash, Undo2 } from "lucide-react";
 import { set } from "mongoose";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -199,7 +199,7 @@ export default function SemesterDetails() {
                         <div className="flex flex-wrap gap-4">
                                 { semester &&
                                     semester.subjects.map((subject: any) => (
-                                        <div key={subject._id} onClick={() => setOrDeleteSubject(subject)} className={`flex flex-col justify-center p-4 ${isDeleteMode ? "bg-pink-300" : "bg-pink-600"} ${isDeleteMode && 'animate-pulse'} text-white text-center text-xl font-bold rounded-xl w-[45%] h-32 border-white border-2 shadow-lg`}>
+                                        <div key={subject._id} onClick={() => setOrDeleteSubject(subject)} className={`flex flex-col justify-center cursor-pointer p-4 ${isDeleteMode ? "bg-pink-300" : "bg-pink-600"} ${isDeleteMode && 'animate-pulse'} text-white text-center text-xl font-bold rounded-xl w-[45%] h-32 border-white border-2 shadow-lg`}>
                                             {subject.subject_name}
                                             <p className="text-sm">{calculateGradeAverage(subject)} Ø</p>
                                         </div>
@@ -224,8 +224,8 @@ export default function SemesterDetails() {
                         </div>
 
                         <div className="w-full flex mt-8">
-                            {isDeleteMode && <button className="bg-pink-600 p-4 text-white font-semibold rounded-xl ml-auto mr-4 shadow-lg border-white border-2" onClick={() => setIsDeleteMode(false)}>Abbrechen</button>}
-                            {!isDeleteMode && <button className="bg-pink-600 p-4 text-white font-semibold rounded-xl ml-auto mr-4 shadow-lg border-white border-2" onClick={() => setIsDeleteMode(true)}>Fach löschen</button>}
+                            {isDeleteMode && <button className="bg-pink-600 p-4 text-white font-semibold rounded-xl ml-auto mr-4 shadow-lg border-white border-2 flex gap-x-2" onClick={() => setIsDeleteMode(false)}><Ban /> Abbrechen</button>}
+                            {!isDeleteMode && <button className="bg-pink-600 p-4 text-white font-semibold rounded-xl ml-auto mr-4 shadow-lg border-white border-2 flex gap-x-2" onClick={() => setIsDeleteMode(true)}><Trash />Fach löschen</button>}
                         </div>
                     </div>
                 </div>

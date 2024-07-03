@@ -42,9 +42,20 @@ const userSchema = new Schema({
         default: false
     },
     receivesMailNotifications: {
+        type: [String],
+        required: false,
+        default: []
+    },
+    apprentices: {
+        type: [String],
+        required: false,
+        default: [],
+    },
+    isSuperadmin: {
         type: Boolean,
         required: false,
         default: false
+    
     },
 }, { timestamps: true });
 
