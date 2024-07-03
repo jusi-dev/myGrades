@@ -38,11 +38,11 @@ export default function LoginForm() {
       const res = await signIn('credentials', {
         email,
         password,
-        redirect: false
+        redirect: true
       })
 
       if (res!.error) {
-        setError('An error occured')
+        setError('Ein Fehler ist aufgetreten. Bitte versuche es erneut.')
       }
 
       router.replace("/dashboard")
@@ -55,7 +55,7 @@ export default function LoginForm() {
     <>
       {!loginExpanded &&
         <div onClick={() => setLoginExpanded(!loginExpanded)} className="flex items-center justify-center h-16 cursor-pointer absolute bottom-20 w-screen left-50">
-          <button className="text-pink-600 px-24 py-3 rounded-full bg-white uppercase">Login</button>
+          <button className="text-pink-600 px-24 py-3 rounded-full bg-white uppercase cursor-pointer">Login</button>
         </div>
       }
       <div className="flex flex-col w-screen h-screen overflow-y-hidden lg:px-[40%]">
@@ -74,8 +74,8 @@ export default function LoginForm() {
             <p className="text-pink-600">Passwort</p>
             <Input onChange={(e) => setPassword(e.target.value)} type="password" autoComplete="off" placeholder="*****" className="w-auto py-2 focus:border-pink-600 mb-4" />
             <div className="flex justify-between mt-4">
-              <Input type="submit" value="Anmelden" className="w-auto py-2 px-8 bg-pink-600 text-white text-center" />
-              <button onClick={() => router.push("/forgotPassword")} className="text-pink-600 text-xs underline">Passwort vergessen?</button>
+              <Input type="submit" value="Anmelden" className="w-auto py-2 px-8 bg-pink-600 text-white text-center cursor-pointer" />
+              <button onClick={() => router.push("/forgotPassword")} className="text-pink-600 text-xs underline cursor-pointer">Passwort vergessen?</button>
             </div>
             {error && 
               <p className="text-red-600">{error}</p>
